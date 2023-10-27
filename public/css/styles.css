@@ -1,0 +1,10 @@
+:root {
+   /* COLORS */
+   --primaryColor: #1fb2a6;
+   --secondaryColor: #19b8e2;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+body {
+   font-family: "Roboto", sans-serif;
+}

@@ -1,10 +1,31 @@
-.DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
-.env
-.env.*
-!.env.example
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
+# Ignore '.git' folder
+/.git/*
+
+# Ignore '.vscode' folder
+/.vscode/*
+
+# Ignore '.idea' (PHPStorm) folder
+/.idea/*
+
+# Ignore any file/folder starting with '._'
+*._*
+*/._*
+
+# Ignore 'vendor' folder
+/vendor/*
+
+# Ignores any uploaded file inside 'upload' folder
+/upload/*
+
+# Ignores log files
+/configs/logs/*
+
+
+# Ignores file containing sensible parameters (PHP)
+*/params.local.php
+*/params.hosted.php
+
+# Ignore env files (symphony)
+/.env.local
+/.env.local.php
+/.env.*.local

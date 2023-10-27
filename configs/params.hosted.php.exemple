@@ -1,0 +1,18 @@
+<?php
+//   /!\ NEVER PUBLISH THIS FILE ON GITHUB /!\   \\
+
+// Parameters for DB connexion
+define('DB_HOST',			'https://www.google.com');
+define('DB_NAME',			'db_super_name');
+define('DB_USER',			'dank_user');
+define('DB_PASSWORD',	'n0_l1m1T_passw0rd');
+
+// Parameters for PHPMailer
+// define('MAIL_HOST',		'smtp.host.com');
+// define('MAIL_USERNAME',	'username');
+// define('MAIL_PASSWORD',	'password');
+// define('MAIL_PORT',		123);
+// define('MAIL_FROM',		'from@email.com');
+// define('MAIL_REPLY',		'reply@email.com');
+
+//   /!\ NEVER PUBLISH THIS FILE ON GITHUB /!\   \\
