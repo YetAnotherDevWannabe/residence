@@ -73,7 +73,7 @@ function isRemembered() {
 			return false;
 		}
 
-		// If info from COOKIE matches that of DB, proceed to log user in
+		//// If info from COOKIE matches that of DB, proceed to log user in
 		$remembermeManager = new App\Models\Managers\RemembermeManager();
 		$rememberme = $remembermeManager->getOneByUserId($cookieUserId);
 
@@ -146,9 +146,8 @@ function invalidateRemembermeToken($user, bool $userIdOnly = false) {
 	// If a token is found, Invalidates it
 	if( !empty($existingUserToken) ) {
 		$invalidStatus = $remembermeManager->invalidate($existingUserToken);
+		return $invalidStatus;
 	}
-
-	return $invalidStatus;
 }
 
 // Log function (exemple, very basic)
