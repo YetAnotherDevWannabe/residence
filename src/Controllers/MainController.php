@@ -6,6 +6,9 @@
 namespace App\Controllers;
 
 // Importing necessary classes
+
+use App\Models\Rememberme;
+use App\Models\Managers\RemembermeManager;
 use App\Models\Managers\UserManager;
 use App\Models\User;
 use \DateTime;
@@ -140,6 +143,18 @@ class MainController
 		if ( isConnected() ) {
 			header('location: ' . PUBLIC_PATH);
 			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
 		}
 
 		////----- 1. Check if form vars exists -----////
@@ -182,21 +197,71 @@ class MainController
 				$userToConnect = $userManager->getOneBy('email', $_POST['email']);
 
 				if ( empty($userToConnect) ) {
+
 					$errors['email'] = 'No account associated with this email';
 					updateLog(ERROR_LOG, $errors['email']);
+
 				} else {
+
 					// Verify the password gives the same hash as the hash saved in DB
 					if ( password_verify($_POST['password'], $userToConnect->getPasswordHash()) ) {
 
-						// StayConnected option
-						if( isset($_POST['stayConnected']) ) {
-							// TODO:StayConnected
+						// Rememberme option \\
+						//----------------------\\
+						if( isset($_POST['rememberme']) ) {
+
+							// Generates a crypographically secure random string
+							$token = opensslRandomGenerate(128);
+
+							// Check if the token is cryptographically strong (returns 0 if not)
+							if($token) {
+
+								// Load RemembermeManager
+								$remembermeManager = new RemembermeManager();
+
+								//	Get the current datetime
+								$datetimeNow = new DateTime();
+
+								// Save the token in DB
+								$rememberme = new Rememberme();
+								$rememberme->setToken($token)
+									->setUserId($userToConnect->getId())
+									->setCreationDate($datetimeNow)
+									->setExpirationDate($datetimeNow->modify('+30 days'))
+									->setValid(true);
+
+								// Check if user already has a Rememberme token
+								$existingUserToken = $remembermeManager->getOneByUserId($userToConnect->getId());
+
+								if( !empty($existingUserToken) ) {
+
+									// Inavalidate any valid token from the user
+									$invalidStatus = $remembermeManager->invalidate($existingUserToken);
+									// $invalidStatus should be true
+
+								} else {
+
+									// Save the Rememberme object in DB
+									$remembermeStatus = $remembermeManager->save($rememberme);
+
+									// If no object saved in DB w/o error, continue
+									if($remembermeStatus) {
+										// Create a COOKIE /w the rememberme info in it
+										// https://stackoverflow.com/a/17266448
+										$mac = hash_hmac('sha256', $userToConnect->getId().':'.$token, STAY_CONNECTED_KEY);
+										$cookie = $userToConnect->getId().':'.$token.':'.$mac;
+										setcookie('rememberme', $cookie, $datetimeNow->modify('+30 days')->format('U'));
+									}
+
+								}
+							}
 						}
 
-						// Connect user
-						$_SESSION['user'] = $userToConnect;
+						// Login user \\
+						//------------\\
+						logUserIn($userToConnect);
 						$success = 'Your are now logged-in';
-						updateLog(INFO_LOG, 'user '.$userToConnect->getEmail().' logged-in');
+
 					} else {
 						$errors['password'] = 'Incorrect password';
 						updateLog(ERROR_LOG, $errors['password']);
@@ -220,8 +285,14 @@ class MainController
 			die();
 		}
 
-		// Remove user form $_SESSION
-		unset($_SESSION['user']);
+		
+		// Load user from DB
+		$userManager = new UserManager();
+		$user = $userManager->getOneById($_SESSION['user']->getId());
+
+		// Invalidates Rememberme token if one is found & Logout user out
+		invalidateRemembermeToken($user);
+		logUserOut($user);
 
 		// Load signout view
 		require VIEWS_DIR . 'logout.php';

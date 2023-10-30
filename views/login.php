@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 	<title>Login page</title>
-	<?php include VIEWS_DIR . '/partials/header.php'; ?>
+	<?php include VIEWS_DIR . 'partials/header.php'; ?>
 	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>/css/login.css"> --><!-- CSS for this page would go here -->
 </head>
 
@@ -13,19 +13,23 @@
 	$residence->name = 'Apart Lyon';
 
 	if (isConnected()) {
-		header('location: ' . PUBLIC_PATH);
+		// header('location: ' . PUBLIC_PATH);
+		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
+		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
+		$topNavEnd = VIEWS_DIR.'partials/navbar/connected-user.php';
 	} else {
-		$TopNavStart = VIEWS_DIR .'/partials/navbar/logo.php';
-		$TopNavCenter = VIEWS_DIR .'/partials/top-navbar.php';
+		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
+		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
+		$topNavEnd = '';
 	}
-	include VIEWS_DIR .'/partials/navbar/_top-navbar.php';
+	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	
 	if ( isset($success) ) {
 		?>
 		<div class="card w-1/2 bg-base-200 shadow-xl mt-20 mx-auto">
-			<div class="card-body items-center text-center">
+			<div class="card-body items-center text-center p-4">
 				<h2 class="card-title text-success">Success!</h2>
-				<p class="py-6"><?= $success ?></p>
+				<p class="my-4"><?= $success ?></p>
 				<div class="card-actions flex justify-end mt-4">
 					<a href="<?= PUBLIC_PATH ?>dashboard/" class="btn btn-success">Dashboard</a>
 				</div>
@@ -35,9 +39,9 @@
 	} else if ( isset($errors['server']) ) {
 		?>
 		<div class="card w-1/2 bg-base-200 shadow-xl mt-20 mx-auto">
-			<div class="card-body items-center text-center">
+			<div class="card-body items-center text-center p-4">
 				<h2 class="card-title text-error">Error!</h2>
-				<p class="py-6"><?= $errors['server'] ?></p>
+				<p class="my-4"><?= $errors['server'] ?></p>
 				<div class="card-actions justify-end">
 					<a href="<?= PUBLIC_PATH ?>login/" class="btn btn-error">Back</a>
 				</div>
@@ -71,47 +75,60 @@
 					<form method="POST" action="<?= PUBLIC_PATH ?>login/">
 
 						<!-- Email -->
-						<div class="form-control mt-4 lg:mt-3 sm:mt-2">
-							<label class="label">
-								<span class="label-text">Email address :</span>
-							</label>
-							<input
-								type="email"
-								name="email"
-								placeholder="Enter your email address"
-								class="input input-bordered<?= isset($errors['email']) ? ' border-error' : '' ?>"
-								value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
-								required
-							/>
-							<?= isset($errors['email']) ? '<p class="text-error text-xs italic mt-2">' . $errors['email'] . '</p>' : ''; ?>
+						<div class="bg-base-100 p-1 rounded-lg mt-6 lg:mt-3 sm:mt-2">
+							<div class="relative bg-inherit">
+								<input 
+									type="email"
+									name="email"
+									class="input input-bordered peer bg-transparent h-11 w-full rounded-lg placeholder-transparent border-gray-500 
+											focus:border-2 focus:outline-none <?= isset($errors['email']) ? ' border-rose-400' : ' focus:border-teal-600' ?>
+											<?= isset($_POST['email']) && !isset($errors['email']) ? ' border-teal-600' : ''; ?>"
+									pplaceholder="Type inside me"
+									value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
+									required
+								/>
+								<label
+									for="email"
+									class="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 
+											peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 
+											peer-focus:-top-3 peer-focus:text-sm transition-all<?= isset($errors['email']) ? ' text-rose-400' : ' peer-focus:text-teal-600' ?>"
+								>Email address</label>
+							<?= isset($errors['email']) ? '<p class="text-rose-400 text-xs italic mt-2">'.$errors['email'].'</p>' : ''; ?>
+							</div>
 						</div>
 
 						<!-- Password -->
-						<div class="form-control mt-4 lg:mt-3 sm:mt-2">
-							<label class="label">
-								<span class="label-text">Password :</span>
-							</label>
-							<input
-								type="password"
-								name="password"
-								placeholder="Enter your password"
-								class="input input-bordered<?= isset($errors['password']) ? ' border-error' : '' ?>"
-								required
-							/>
-							<?= isset($errors['password']) ? '<p class="text-error text-xs italic mt-2">' . $errors['password'] . '</p>' : ''; ?>
+						<div class="bg-base-100 p-1 rounded-lg mt-6 lg:mt-3 sm:mt-2">
+							<div class="relative bg-inherit">
+								<input 
+									type="password"
+									name="password"
+									class="input input-bordered peer bg-transparent h-11 w-full rounded-lg placeholder-transparent border-gray-500 
+											focus:border-2 focus:outline-none <?= isset($errors['password']) ? ' border-rose-400' : ' focus:border-teal-600' ?>"
+									pplaceholder="Type inside me"
+									required
+								/>
+								<label
+									for="password"
+									class="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 
+											peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 
+											peer-focus:-top-3 peer-focus:text-sm transition-all<?= isset($errors['password']) ? ' text-rose-400' : ' peer-focus:text-teal-600' ?>"
+								>Password</label>
+							<?= isset($errors['password']) ? '<p class="text-rose-400 text-xs italic mt-2">'.$errors['password'].'</p>' : ''; ?>
+							</div>
 						</div>
 
-						<!-- Stay connected -->
+						<!-- Remember me -->
 						<div class="form-control mt-4 lg:mt-3 sm:mt-2 w-2/5">
 							<label class="cursor-pointer label">
-								<input <?= isset($_POST['stayConnected']) ? 'checked ' : ' '; ?>type="checkbox" name="stayConnected" class="checkbox checkbox-md lg:checkbox-md sm:checkbox-sm checkbox-accent" />
-								<span class="label-text text-neutral-content">Stay connected</span>
+								<input <?= isset($_POST['rememberme']) ? 'checked ' : ' '; ?>type="checkbox" name="rememberme" class="checkbox checkbox-md lg:checkbox-md sm:checkbox-sm checkbox-accent" />
+								<span class="label-text text-neutral-content">Remember me</span>
 							</label>
 						</div>
 
 						<!-- Log-In button -->
 						<div class="form-control mt-6">
-							<button class="btn btn-primary normal-case">Login</button>
+							<button class="btn btn-accent normal-case">Login</button>
 						</div>
 
 						<!-- Divider -->
