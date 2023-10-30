@@ -29,3 +29,6 @@ define('LOG_DIR', __DIR__.'/logs/');
 define('DB_LOG',		'db_logs.txt');		// exemple of log files
 define('ERROR_LOG',	'error_logs.txt');	// exemple of log files
 define('INFO_LOG',	'info_logs.txt');		// exemple of log files
+
+// Load the connected user for sitewide usage
+define('USER', isset($_SESSION['user']) ? $_SESSION['user'] : null);

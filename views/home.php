@@ -8,16 +8,10 @@
 
 <body>
 	<?php
-	$elem1 = new stdClass();
-	$elem1->type = 'Apartment';
-	$elem1->name = 'Apart Lyon';
+	$residence = new stdClass();
+	$residence->type = 'Apartment';
+	$residence->name = 'Apart Lyon';
 
-	$elem2 = new stdClass();
-	$elem2->type = 'House';
-	$elem2->name = 'House Paris';
-
-	$residence = $elem1;
-	// $residence = $elem2;
 	if (isConnected()) {
 		$topNavStart = VIEWS_DIR.'partials/navbar/breadcrumb.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
