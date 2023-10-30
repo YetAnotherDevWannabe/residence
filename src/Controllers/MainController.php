@@ -25,8 +25,23 @@ class MainController
 	 * Controller for home page
 	 */
 	public function home() {
+		// Check for Rememberme
+		if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
+		}
+
 		// Load home view
-		require VIEWS_DIR . 'home.php';
+		require VIEWS_DIR.'home.php';
 	}
 
 
@@ -37,8 +52,20 @@ class MainController
 
 		// Redirect if already connected
 		if ( isConnected() ) {
-			header('location: ' . PUBLIC_PATH);
+			header('location: '.PUBLIC_PATH);
 			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
 		}
 
 		////----- 1. Check if form vars exists -----////
@@ -132,7 +159,7 @@ class MainController
 		}
 
 		// Charge la vue register.php dans le dossier views
-		require VIEWS_DIR . 'signup.php';
+		require VIEWS_DIR.'signup.php';
 	}
 
 	/**
@@ -141,7 +168,7 @@ class MainController
 	public function logIn() {
 		// Redirect if already connected
 		if ( isConnected() ) {
-			header('location: ' . PUBLIC_PATH);
+			header('location: '.PUBLIC_PATH);
 			die();
 		} else if( isRemembered() ) {
 
@@ -272,7 +299,7 @@ class MainController
 		}
 
 		// Charge la vue login.php dans le dossier des vues "views"
-		require VIEWS_DIR . 'login.php';
+		require VIEWS_DIR.'login.php';
 	}
 
 	/**
@@ -281,7 +308,7 @@ class MainController
 	public function logOut() {
 		// Redirect if not connected
 		if ( !isConnected() ) {
-			header('location: ' . PUBLIC_PATH);
+			header('location: '.PUBLIC_PATH);
 			die();
 		}
 
@@ -295,7 +322,7 @@ class MainController
 		logUserOut($user);
 
 		// Load signout view
-		require VIEWS_DIR . 'logout.php';
+		require VIEWS_DIR.'logout.php';
 	}
 
 
@@ -305,14 +332,26 @@ class MainController
 	public function profil() {
 		// Redirect if not connected
 		if ( !isConnected() ) {
-			header('location: ' . PUBLIC_PATH);
+			header('location: '.PUBLIC_PATH);
 			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
 		}
 
 		//TODO: Do things here
 
 		// Load profil view
-		require VIEWS_DIR . 'profil.php';
+		require VIEWS_DIR.'profil.php';
 	}
 
 
@@ -328,6 +367,6 @@ class MainController
 		header('HTTP/1.0 404 Not Found');
 
 		// Load 404 view
-		require VIEWS_DIR . '404.php';
+		require VIEWS_DIR.'404.php';
 	}
 }
