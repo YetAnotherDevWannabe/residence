@@ -71,65 +71,91 @@
 					<form method="POST" action="<?= PUBLIC_PATH ?>signup/">
 
 						<!-- Full Name -->
-						<div class="form-control mt-4 lg:mt-3 sm:mt-2">
-							<label class="label">
-								<span class="label-text">Full name :</span>
-							</label>
-							<input
-								type="text"
-								name="name"
-								placeholder="Enter your full name"
-								class="input input-bordered<?= isset($errors['name']) ? ' border-error' : '' ?>"
-								value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"
-								required
-							/>
-							<?= isset($errors['name']) ? '<p class="text-error text-xs italic mt-2">' . $errors['name'] . '</p>' : ''; ?>
+						<div class="bg-base-100 p-1 rounded-lg mt-10 lg:mt-6 sm:mt-2">
+							<div class="relative bg-inherit">
+								<input 
+									type="text"
+									name="name"
+									class="input input-bordered peer bg-transparent h-11 w-full rounded-lg placeholder-transparent border-gray-500 
+											focus:border-2 focus:outline-none <?= isset($errors['name']) ? ' border-rose-400' : ' focus:border-teal-600' ?>
+											<?= isset($_POST['name']) && !isset($errors['name']) ? ' border-teal-600' : ''; ?>"
+									pplaceholder="Type inside me"
+									value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"
+									required
+								/>
+								<label
+									for="name"
+									class="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 
+											peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 
+											peer-focus:-top-3 peer-focus:text-sm transition-all<?= isset($errors['name']) ? ' text-rose-400' : ' peer-focus:text-teal-600' ?>"
+								>Full name</label>
+							<?= isset($errors['name']) ? '<p class="text-rose-400 text-xs italic mt-2">'.$errors['name'].'</p>' : ''; ?>
+							</div>
 						</div>
 
 						<!-- Email -->
-						<div class="form-control mt-4 lg:mt-3 sm:mt-2">
-							<label class="label">
-								<span class="label-text">Email address :</span>
-							</label>
-							<input
-								type="email"
-								name="email"
-								placeholder="Enter your email address"
-								class="input input-bordered<?= isset($errors['email']) ? ' border-error' : '' ?>"
-								value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
-								required
-							/>
-							<?= isset($errors['email']) ? '<p class="text-error text-xs italic mt-2">' . $errors['email'] . '</p>' : ''; ?>
+						<div class="bg-base-100 p-1 rounded-lg mt-10 lg:mt-6 sm:mt-2">
+							<div class="relative bg-inherit">
+								<input 
+									type="email"
+									name="email"
+									class="input input-bordered peer bg-transparent h-11 w-full rounded-lg placeholder-transparent border-gray-500 
+											focus:border-2 focus:outline-none <?= isset($errors['email']) ? ' border-rose-400' : ' focus:border-teal-600' ?>
+											<?= isset($_POST['email']) && !isset($errors['email']) ? ' border-teal-600' : ''; ?>"
+									pplaceholder="Type inside me"
+									value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
+									required
+								/>
+								<label
+									for="email"
+									class="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 
+											peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 
+											peer-focus:-top-3 peer-focus:text-sm transition-all<?= isset($errors['email']) ? ' text-rose-400' : ' peer-focus:text-teal-600' ?>"
+								>Email address</label>
+							<?= isset($errors['email']) ? '<p class="text-rose-400 text-xs italic mt-2">'.$errors['email'].'</p>' : ''; ?>
+							</div>
 						</div>
 
 						<!-- Password -->
-						<div class="form-control mt-4 lg:mt-3 sm:mt-2">
-							<label class="label">
-								<span class="label-text">Password :</span>
-							</label>
-							<input
-								type="password"
-								name="password"
-								placeholder="Enter your password"
-								class="input input-bordered<?= isset($errors['password']) ? ' border-error' : '' ?>"
-								required
-							/>
-							<?= isset($errors['password']) ? '<p class="text-error text-xs italic mt-2">' . $errors['password'] . '</p>' : ''; ?>
+						<div class="bg-base-100 p-1 rounded-lg mt-10 lg:mt-6 sm:mt-2">
+							<div class="relative bg-inherit">
+								<input 
+									type="password"
+									name="password"
+									class="input input-bordered peer bg-transparent h-11 w-full rounded-lg placeholder-transparent border-gray-500 
+											focus:border-2 focus:outline-none <?= isset($errors['password']) ? ' border-rose-400' : ' focus:border-teal-600' ?>"
+									pplaceholder="Type inside me"
+									required
+								/>
+								<label
+									for="password"
+									class="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 
+											peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 
+											peer-focus:-top-3 peer-focus:text-sm transition-all<?= isset($errors['password']) ? ' text-rose-400' : ' peer-focus:text-teal-600' ?>"
+								>Password</label>
+							<?= isset($errors['password']) ? '<p class="text-rose-400 text-xs italic mt-2">'.$errors['password'].'</p>' : ''; ?>
+							</div>
 						</div>
 
 						<!-- Confirm password -->
-						<div class="form-control mt-4 lg:mt-3 sm:mt-2">
-							<label class="label">
-								<span class="label-text">Confirm password :</span>
-							</label>
-							<input
-								type="password"
-								name="confirm-password"
-								placeholder="Confirm your password"
-								class="input input-bordered<?= isset($errors['confirm-password']) ? ' border-error' : '' ?>"
-								required
-							/>
-							<?= isset($errors['confirm-password']) ? '<p class="text-error text-xs italic mt-2">' . $errors['confirm-password'] . '</p>' : ''; ?>
+						<div class="bg-base-100 p-1 rounded-lg mt-10 lg:mt-6 sm:mt-2">
+							<div class="relative bg-inherit">
+								<input 
+									type="password"
+									name="confirm-password"
+									class="input input-bordered peer bg-transparent h-11 w-full rounded-lg placeholder-transparent border-gray-500 
+											focus:border-2 focus:outline-none <?= isset($errors['confirm-password']) ? ' border-rose-400' : ' focus:border-teal-600' ?>"
+									pplaceholder="Type inside me"
+									required
+								/>
+								<label
+									for="confirm-password"
+									class="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 
+											peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 
+											peer-focus:-top-3 peer-focus:text-sm transition-all<?= isset($errors['confirm-password']) ? ' text-rose-400' : ' peer-focus:text-teal-600' ?>"
+								>Confirm password</label>
+							<?= isset($errors['confirm-password']) ? '<p class="text-rose-400 text-xs italic mt-2">'.$errors['confirm-password'].'</p>' : ''; ?>
+							</div>
 						</div>
 
 						<!-- Terms and Conditions -->

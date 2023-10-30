@@ -75,7 +75,7 @@
 					<form method="POST" action="<?= PUBLIC_PATH ?>login/">
 
 						<!-- Email -->
-						<div class="bg-base-100 p-1 rounded-lg mt-6 lg:mt-3 sm:mt-2">
+						<div class="bg-base-100 p-1 rounded-lg mt-10 lg:mt-6 sm:mt-2">
 							<div class="relative bg-inherit">
 								<input 
 									type="email"
@@ -98,7 +98,7 @@
 						</div>
 
 						<!-- Password -->
-						<div class="bg-base-100 p-1 rounded-lg mt-6 lg:mt-3 sm:mt-2">
+						<div class="bg-base-100 p-1 rounded-lg mt-10 lg:mt-6 sm:mt-2">
 							<div class="relative bg-inherit">
 								<input 
 									type="password"
