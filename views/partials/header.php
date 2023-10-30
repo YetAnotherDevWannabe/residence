@@ -8,10 +8,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <![endif]-->
 
-<!-- Bootstrap css -->
-<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>/css/bootstrap.min.css"> -->
-<!-- Picocss.com -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"> -->
 <!-- daisyui.com -->
 <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.tailwindcss.com"></script>

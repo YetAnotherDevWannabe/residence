@@ -52,15 +52,15 @@ class UserManager
 			$sql = 'INSERT INTO user(email, password_hash, name, avatar, registration_date, deleted) VALUES(?, ?, ?, ?, ?, ?);';
 
 			// Prepare then Execute SQL request
-			$insertUser = $this->getDb()->prepare($sql);
-			$status = $insertUser->execute($params);
+			$preparedSQL = $this->getDb()->prepare($sql);
+			$status = $preparedSQL->execute($params);
 
 			$userToSave->setId($this->getDb()->lastInsertId());
 			return $status;
 		}
 
 	/**
-	 * Méthode servant à modifier un objet d' utilisateur en DB
+	 * Method used to update a User object in DB
 	 */
 		public function update(User $userToModify) {
 			// Check what parts of the User needs an update and build SQL query and params
@@ -96,8 +96,8 @@ class UserManager
 			$sql = $sql.' WHERE id = :id AND deleted = false;';
 
 			// Prepare then Execute SQL request
-			$modifyUser = $this->getDb()->prepare($sql);
-			$status = $modifyUser->execute($params);
+			$preparedSQL = $this->getDb()->prepare($sql);
+			$status = $preparedSQL->execute($params);
 			return $status;
 		}
 
@@ -114,13 +114,13 @@ class UserManager
 			$sql = 'UPDATE user SET deleted = true WHERE id = ? AND deleted = false;';
 
 			// Prepare then Execute SQL request
-			$deleteUser = $this->getDb()->prepare($sql);
-			$status = $deleteUser->execute($params);
+			$preparedSQL = $this->getDb()->prepare($sql);
+			$status = $preparedSQL->execute($params);
 			return $status;
 		}
 
 	/**
-	 * Method used to get one User by one of its properties, unless user is marked as deleted
+	 * Method used to get one User by one of its properties, unless marked as deleted
 	 */
 		public function getOneBy(string $property, $value) {
 			// Parameters for the SQL query about to be executed (same number, same order)
@@ -145,7 +145,7 @@ class UserManager
 		}
 
 	/**
-	 * Method used to get one User by its id, unless file is marked as deleted
+	 * Method used to get one User by its id, unless marked as deleted
 	 */
 		public function getOneById(int $id) {
 			// Parameters for the SQL query about to be executed (same number, same order)

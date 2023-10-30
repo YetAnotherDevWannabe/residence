@@ -1,16 +1,16 @@
 <div class="navbar bg-base-300 h-14">
 
 	<div class="navbar-start ms-14">
-		<?php $TopNavStart ? include $TopNavStart : ''; ?>
+		<?php $topNavStart ? include $topNavStart : ''; ?>
 	</div>
 
 	<div class="navbar-center lg:flex">
-		<?php $TopNavCenter ? include $TopNavCenter : ''; ?>
+		<?php $topNavCenter ? include $topNavCenter : ''; ?>
 	</div>
 
 	<?php if (isConnected()) { ?>
 	<div class="navbar-end">
-		<?php $TopNavEnd ? include $TopNavEnd : ''; ?>
+		<?php $topNavEnd ? include $topNavEnd : ''; ?>
 	</div>
 	<?php } ?>
 </div>

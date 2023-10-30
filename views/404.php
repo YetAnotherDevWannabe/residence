@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 	<title>404: Not found</title>
-	<?php include VIEWS_DIR . '/partials/header.php'; ?>
+	<?php include VIEWS_DIR.'partials/header.php'; ?>
 </head>
 
 <body>
@@ -18,15 +18,15 @@
 	$residence = $elem1;
 	// $residence = $elem2;
 	if (isConnected()) {
-		$TopNavStart = VIEWS_DIR .'/partials/navbar/breadcrumb.php';
-		$TopNavCenter = '';
-		$TopNavEnd = VIEWS_DIR .'/partials/navbar/connected-user.php';
+		$topNavStart = VIEWS_DIR.'partials/navbar/breadcrumb.php';
+		$topNavCenter = '';
+		$topNavEnd = VIEWS_DIR.'partials/navbar/connected-user.php';
 	} else {
-		$TopNavStart = VIEWS_DIR .'/partials/navbar/breadcrumb.php';
-		$TopNavCenter = '';
-		$TopNavEnd = '';
+		$topNavStart = VIEWS_DIR.'partials/navbar/breadcrumb.php';
+		$topNavCenter = '';
+		$topNavEnd = '';
 	}
-	include VIEWS_DIR .'/partials/navbar/_top-navbar.php';
+	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	?>
 	<div class="container">
 
@@ -53,5 +53,3 @@
 	<?php include VIEWS_DIR . '/partials/footer.php'; ?>
 </body>
 </html>
-
-

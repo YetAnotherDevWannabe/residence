@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 	<title>Signup page</title>
-	<?php include VIEWS_DIR . '/partials/header.php'; ?>
+	<?php include VIEWS_DIR.'partials/header.php'; ?>
 	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>/css/signup.css"> --><!-- CSS for this page would go here -->
 </head>
 
@@ -15,17 +15,17 @@
 	if (isConnected()) {
 		header('location: ' . PUBLIC_PATH);
 	} else {
-		$TopNavStart = VIEWS_DIR .'/partials/navbar/logo.php';
-		$TopNavCenter = VIEWS_DIR .'/partials/top-navbar.php';
+		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
+		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
 	}
-	include VIEWS_DIR .'/partials/navbar/_top-navbar.php';
+	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	
 	if ( isset($success) ) {
 		?>
 		<div class="card w-1/2 bg-base-200 shadow-xl mt-20 mx-auto">
-			<div class="card-body items-center text-center">
+			<div class="card-body items-center text-center p-4">
 				<h2 class="card-title text-success">Success!</h2>
-				<p class="py-6"><?= $success ?></p>
+				<p class="my-4"><?= $success ?></p>
 				<div class="card-actions flex justify-end mt-4">
 					<a href="<?= PUBLIC_PATH ?>login/" class="btn btn-success">Log-In</a>
 				</div>
@@ -35,9 +35,9 @@
 	} else if ( isset($errors['server']) ) {
 		?>
 		<div class="card w-1/2 bg-base-200 shadow-xl mt-20 mx-auto">
-			<div class="card-body items-center text-center">
+			<div class="card-body items-center text-center p-4">
 				<h2 class="card-title text-error">Error!</h2>
-				<p class="py-6"><?= $errors['server'] ?></p>
+				<p class="my-4"><?= $errors['server'] ?></p>
 				<div class="card-actions justify-end">
 					<a href="<?= PUBLIC_PATH ?>" class="btn btn-error">Back</a>
 				</div>
@@ -54,7 +54,7 @@
 				<!-- Right side -->
 				<!---------------->
 				<div class="w-2/3 me-2">
-					<img class="rounded-lg" src="<?= PUBLIC_PATH ?>img/login_hero.jpg" alt="login_image">
+					<img class="rounded-lg" src="<?= PUBLIC_PATH ?>img/signup_hero.jpg" alt="login_image">
 				</div>
 
 				<!--------------->

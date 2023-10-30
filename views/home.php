@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 	<title>Home page</title>
-	<?php include VIEWS_DIR .'/partials/header.php'; ?>
+	<?php include VIEWS_DIR.'partials/header.php'; ?>
 	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>css/home.css"> -->
 </head>
 
@@ -19,14 +19,14 @@
 	$residence = $elem1;
 	// $residence = $elem2;
 	if (isConnected()) {
-		$TopNavStart = VIEWS_DIR .'/partials/navbar/breadcrumb.php';
-		$TopNavCenter = VIEWS_DIR .'/partials/top-navbar.php';
-		$TopNavEnd = VIEWS_DIR .'/partials/navbar/connected-user.php';
+		$topNavStart = VIEWS_DIR.'partials/navbar/breadcrumb.php';
+		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
+		$topNavEnd = VIEWS_DIR.'partials/navbar/connected-user.php';
 	} else {
-		$TopNavStart = VIEWS_DIR .'/partials/navbar/logo.php';
-		$TopNavCenter = VIEWS_DIR .'/partials/top-navbar.php';
+		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
+		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
 	}
-	include VIEWS_DIR .'/partials/navbar/_top-navbar.php';
+	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	?>
 
 	<div class="flex justify-around">
