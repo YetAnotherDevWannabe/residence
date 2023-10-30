@@ -16,7 +16,7 @@
 		// header('location: ' . PUBLIC_PATH);
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
-		$topNavEnd = VIEWS_DIR.'partials/navbar/connected-user.php';
+		$topNavEnd = '';
 	} else {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
