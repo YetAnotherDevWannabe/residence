@@ -13,14 +13,12 @@
 	$residence->name = 'Apart Lyon';
 
 	if (isConnected()) {
-		// header('location: ' . PUBLIC_PATH);
-		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
-		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
+		header('location: ' . PUBLIC_PATH);
 		$topNavEnd = '';
 	} else {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
-		$topNavEnd = '';
+		$topNavEnd = null;
 	}
 	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	

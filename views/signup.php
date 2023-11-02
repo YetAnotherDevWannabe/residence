@@ -17,6 +17,7 @@
 	} else {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
+		$topNavEnd = null;
 	}
 	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	

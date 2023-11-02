@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
-	<title>Log-out page</title>
+	<title>Logout page</title>
 	<?php include VIEWS_DIR.'partials/header.php'; ?>
 </head>
 
 <body>
 	<?php
 	$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
-	$topNavCenter = '';
-	$topNavEnd = '';
+	$topNavCenter = null;
+	$topNavEnd = null;
 	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
 	?>
 	
