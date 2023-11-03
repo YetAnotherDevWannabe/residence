@@ -75,6 +75,14 @@ class UserManager
 				$modifications++;
 			}
 
+			// password_hash
+			if( isset($userToModify->passwordHash) ) {
+				$params['password_hash'] = $userToModify->getPasswordHash();
+				$sep = ($modifications > 0) ? ', ' : ' ';
+				$sql = $sql.$sep.'password_hash = :password_hash';
+				$modifications++;
+			}
+
 			// name
 			if( isset($userToModify->name) ) {
 				$params['name'] = $userToModify->getName();
@@ -83,11 +91,11 @@ class UserManager
 				$modifications++;
 			}
 
-			// password_hash
-			if( isset($userToModify->passwordHash) ) {
-				$params['password_hash'] = $userToModify->getPasswordHash();
+			// avatar
+			if( isset($userToModify->avatar) ) {
+				$params['avatar'] = $userToModify->getAvatar();
 				$sep = ($modifications > 0) ? ', ' : ' ';
-				$sql = $sql.$sep.'password_hash = :password_hash';
+				$sql = $sql.$sep.'avatar = :avatar';
 				$modifications++;
 			}
 

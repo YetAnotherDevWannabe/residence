@@ -16,6 +16,10 @@
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
 		$topNavEnd = VIEWS_DIR.'partials/navbar/connected-user.php';
+
+		// Load the $_SESSION user from DB
+		$userManager = new App\Models\Managers\UserManager();
+		$dbUser = $userManager->getOneById($_SESSION['user']->getId());
 	} else {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';

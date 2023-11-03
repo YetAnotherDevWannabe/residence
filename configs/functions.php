@@ -204,3 +204,38 @@ function opensslRandomGenerate(int $length) {
 		return 0;
 	}
 }
+
+/**
+ * Returns the size of a file in a user friendly readable form
+ * 
+ * @param string $sizeInBytes	A string containing the size of a file in bytes
+ * @return string
+ */
+function sizeConverter($sizeInBytes) {
+	$sizeLen = strlen($sizeInBytes);
+	switch ($sizeLen) {
+		case 1: case 2: case 3:
+			return $sizeInBytes.' B';
+			break;
+
+		case 4: case 5: case 6:
+			return substr(($sizeInBytes / 1024), 0, strpos(($sizeInBytes / 1024), '.') + 3).' KB';
+			break;
+
+		case 7: case 8: case 9:
+			return substr(($sizeInBytes / 1048576), 0, strpos(($sizeInBytes / 1048576), '.') + 3).' MB';
+			break;
+
+		case 10: case 11: case 12:
+			return substr(($sizeInBytes / 1073741824), 0, strpos(($sizeInBytes / 1073741824), '.') + 3).' GB';
+			break;
+
+		case 13: case 14: case 15:
+			return substr(($sizeInBytes / 1099511627776), 0, strpos(($sizeInBytes / 1099511627776), '.') + 3).' TB';
+			break;
+
+		default:
+			return $sizeInBytes;
+			break;
+	}
+}

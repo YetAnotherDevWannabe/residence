@@ -313,7 +313,7 @@ class MainController
 		}
 
 		
-		// Load user from DB
+		// Load $_SESSION user from DB
 		$userManager = new UserManager();
 		$user = $userManager->getOneById($_SESSION['user']->getId());
 
@@ -348,12 +348,218 @@ class MainController
 			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
 		}
 
-		//TODO: Do things here
-
 		// Load profil view
 		require VIEWS_DIR.'profil.php';
 	}
 
+	/**
+	 * Controller for profil
+	 */
+	public function profilEdit() {
+		// Redirect if not connected
+		if ( !isConnected() ) {
+			header('location: '.PUBLIC_PATH);
+			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
+		}
+
+		// Load the $_SESSION user from DB
+		$userManager = new UserManager();
+		$dbUser = $userManager->getOneById($_SESSION['user']->getId());
+
+		if ( empty($dbUser) ) {
+			$errors['server'] = 'Couldn\'t find the user in DB';
+			updateLog(ERROR_LOG, $errors['server']);
+		}
+
+		////----- 1. Check if form vars exists -----////
+		if ( isset($_POST['name']) &&
+			isset($_POST['email']) &&
+			isset($_POST['old-password']) ) {
+
+			////----- 2. Check if there are errors -----////
+			// name
+			if ( mb_strlen($_POST['name']) < 3 || mb_strlen($_POST['name']) > 255 ) {
+				$errors['name'] = 'Your name must be between 3 and 255 characters';
+				updateLog(ERROR_LOG, $errors['name']);
+			}
+
+			// email
+			if ( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ) {
+				if( mb_strlen($_POST['password']) == 0) {
+					$errors['email'] = 'Email cannot be empty';
+				} else {
+					$errors['email'] = 'Invalid email';
+				}
+				updateLog(ERROR_LOG, $errors['email']);
+			}
+
+			if( isset($_POST['new-password']) && isset($_POST['confirm-password']) && !empty($_POST['new-password']) && !empty($_POST['confirm-password']) ) {
+				// new-password
+				if(ENV == 'prod') {
+					// $regex = '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{16,4096}$/';
+					$regex = '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{16,255}$/';
+					$min = 16;
+				} else if(ENV == 'dev') {
+					$regex = '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{8,255}$/';
+					$min = 8;
+				}
+				if ( !preg_match($regex, $_POST['new-password']) ) {
+					if( mb_strlen($_POST['new-password']) == 0) {
+						$errors['new-password'] = 'New password cannot be empty';
+					} else {
+						$errors['new-password'] = 'New password doesn\'t respect complexity rules ([a-z][A-Z][0-9][special_chars] minimum length: '.$min.')';
+					}
+					updateLog(ERROR_LOG, $errors['new-password']);
+				}
+
+				//confirm-password
+				if ( $_POST['confirm-password'] != $_POST['new-password'] ) {
+					if( mb_strlen($_POST['confirm-password']) == 0) {
+						$errors['confirm-password'] = 'Password confirmation cannot be empty';
+					} else {
+						$errors['confirm-password'] = 'Password and confirmation don\'t match';
+					}
+					updateLog(ERROR_LOG, $errors['confirm-password']);
+				}
+			}
+
+
+			////----- 3. If no error then continue -----////
+			if ( !isset($errors) ) {
+
+				if( isset($FILES['avatar']) ) {
+
+					////----- $_FILES['avatar'] -----////
+					switch ($_FILES['avatar']['error']) {
+						case 1:
+							$errors['avatar'] = 'Server cannot accept file this big';
+							updateLog(ERROR_LOG, $errors['avatar']);
+							break;
+
+						case 3:
+							$errors['avatar'] = 'Bad connection to server. Try again later';
+							updateLog(ERROR_LOG, $errors['avatar']);
+							break;
+
+						case 4:
+							$errors['avatar'] = 'No file selected';
+							updateLog(ERROR_LOG, $errors['avatar']);
+							break;
+
+						case 6:
+							$errors['log'] = 'Destination folder not found on server';
+							updateLog(ERROR_LOG, $errors['log']);
+							break;
+
+						case 7:
+							$errors['log'] = 'Problem with writting privileges for destination folder';
+							updateLog(ERROR_LOG, $errors['log']);
+							break;
+
+						case 8:
+							$errors['log'] = 'PHP error';
+							updateLog(ERROR_LOG, $errors['log']);
+							break;
+					}
+
+					// Check if file size is under the accepted limit
+					if ( $_FILES['avatar']['size'] > FILE_SIZE_MAX ) {
+						$errors['avatar'] = 'File size over the accepted limit ('.sizeConverter(FILE_SIZE_MAX).')';
+						updateLog(ERROR_LOG, $errors['avatar']);
+					}
+
+					// Check file type is allowed
+					//TODO
+
+					////Prepare the File
+						// If no error, we move the file to it's correct folder on server
+						$pathinfo = pathinfo($_FILES['avatar']['name']);
+						$originalExt = $pathinfo['extension'];
+
+						// We start by giving the file a new name
+						$newFileName = htmlspecialchars(str_replace(' ', '', $dbUser->getName()));
+						$newFilePath = $newFileName.'.'.$originalExt;
+
+						// Then move it to the final folder
+						move_uploaded_file($_FILES['avatar']['tmp_name'], $newFilePath);
+						
+						// Save old avatar to be deleted
+						$oldAvatar = $dbUser->getAvatar();
+
+				}
+
+				// Check user password
+				if( password_verify($_POST['old-password'], $dbUser->getPasswordHash()) ) {
+
+					//// Prepare a new User to make the changes in DB
+						$userUpdate = new User();
+						$userUpdate
+							->setId($dbUser->getId())
+							->setEmail($_POST['email'])
+							->setName($_POST['name']);
+
+						if( !empty($_POST['new-password']) ) {
+							$userUpdate->setPasswordHash( password_hash($_POST['new-password'], PASSWORD_BCRYPT) );
+						}
+						if( isset($FILES['avatar']) ) {
+							$userUpdate->setAvatar($newFilePath);
+						}
+
+						// We save the new user in DB
+						$status = $userManager->update($userUpdate);
+
+						if ( $status ) {
+							$success = 'Your account was successfully edited';
+							updateLog(INFO_LOG, 'Account successfully edited by '.$userUpdate->getEmail());
+
+							// Remove old avatar after update to account
+							if( !empty($oldAvatar) ) { 
+								unlink(__DIR__.'../../upload/'.$oldAvatar);
+							}
+
+							// Update $userDB to update $_SESSION user
+							$dbUser
+								->setEmail($_POST['email'])
+								->setName($_POST['name'])
+								->setAvatar($newFilePath);
+
+							if( !empty($_POST['new-password']) ) {
+								$dbUser->setPasswordHash( password_hash($_POST['new-password'], PASSWORD_BCRYPT) );
+							}
+							if( isset($FILES['avatar']) ) {
+								$dbUser->setAvatar($newFilePath);
+							}
+
+							$_SESSION['user'] = $dbUser;
+
+						} else {
+							$errors['server'] = 'Problem with the Database, please try again later';
+							updateLog(ERROR_LOG, $errors['server']);
+						}
+
+				} else {
+					$errors['old-password'] = 'Old password is incorrect';
+				}
+if ( isset($errors) ) { dump($errors); }
+
+			}
+		}
+
+		// Load profil view
+		require VIEWS_DIR.'profil-edit.php';
+	}
 
 	/**
 	 * Controller for 404 page

@@ -41,6 +41,10 @@ switch ( ROUTE ) {
 		$mainController->profil();
 		break;
 
+	// Edit
+	case '/profil/edit/';
+		$mainController->profilEdit();
+		break;
 
 
 	/*

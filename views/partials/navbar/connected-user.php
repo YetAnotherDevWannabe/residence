@@ -1,8 +1,8 @@
-<div class="pe-2"><?= htmlspecialchars(USER->getName()); ?></div>
+<div class="pe-2"><?= htmlspecialchars($dbUser->getName()); ?></div>
 <div class="dropdown dropdown-end">
 	<label tabindex="0" class="btn btn-ghost btn-circle avatar bbg-accent">
 		<div class="w-10 rounded-full">
-			<img src="<?= (USER->getAvatar()) ? PUBLIC_PATH.USER->getAvatar() : PUBLIC_PATH.'img/avatar_base.svg' ?>" />
+			<img src="<?= ($dbUser->getAvatar()) ? UPLOAD_DIR.$dbUser->getAvatar() : PUBLIC_PATH.'img/avatar_base.svg' ?>" />
 		</div>
 	</label>
 	<ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52">
