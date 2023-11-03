@@ -44,6 +44,32 @@ class MainController
 		require VIEWS_DIR.'home.php';
 	}
 
+	/**
+	 * Controller for home page
+	 */
+	public function dashboard() {
+		// Redirect if not connected
+		if ( !isConnected() ) {
+			header('location: '.PUBLIC_PATH);
+			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
+		}
+
+		// Load home view
+		require VIEWS_DIR.'dashboard.php';
+	}
+
 
 	/**
 	 * Controller for Sign-up
@@ -552,7 +578,6 @@ class MainController
 				} else {
 					$errors['old-password'] = 'Old password is incorrect';
 				}
-if ( isset($errors) ) { dump($errors); }
 
 			}
 		}

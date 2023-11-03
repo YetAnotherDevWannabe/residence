@@ -11,6 +11,11 @@ switch ( ROUTE ) {
 		$mainController->home();
 		break;
 
+	// Dashboard
+	case '/dashboard/';
+		$mainController->dashboard();
+		break;
+
 
 
 	/*

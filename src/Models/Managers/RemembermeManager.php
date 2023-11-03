@@ -60,7 +60,7 @@ class RemembermeManager
 	 * Method used to update a Rememberme object in DB
 	 */
 		public function update(Rememberme $modifyRememberme) {
-			// Check what parts of the User needs an update and build SQL query and params
+			// Check what parts of the Object needs an update and build SQL query and params
 			$modifications = 0;
 
 			$sql = 'UPDATE rememberme SET';
@@ -80,7 +80,7 @@ class RemembermeManager
 				$modifications++;
 			}
 
-			// then add the id and only active accounts
+			// then add the token
 			$params['token'] = $modifyRememberme->getToken();
 			$sql = $sql.' WHERE token = :token;';
 
