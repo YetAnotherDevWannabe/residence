@@ -45,10 +45,11 @@ class ResidenceManager
 				$residence->getPostalCode(),
 				$residence->getCity(),
 				$residence->getType(),
+				$residence->getDeleted(),
 			];
 
 			// Build SQL request
-			$sql = 'INSERT INTO residence(user_id, name, address, postal_code, city, type) VALUES(?, ?, ?, ?, ?, ?);';
+			$sql = 'INSERT INTO residence(user_id, name, address, postal_code, city, type, deleted) VALUES(?, ?, ?, ?, ?, ?, ?);';
 
 			// Prepare then Execute SQL request
 			$preparedSQL = $this->getDb()->prepare($sql);
@@ -57,6 +58,7 @@ class ResidenceManager
 			$residence->setId($this->getDb()->lastInsertId());
 			return $status;
 		}
+
 
 	/**
 	 * Method used to update a Residence object in DB
@@ -106,6 +108,14 @@ class ResidenceManager
 				$modifications++;
 			}
 
+			// deleted
+			if( isset($modifyResidence->deleted) ) {
+				$params['deleted'] = $modifyResidence->getDeleted();
+				$sep = ($modifications > 0) ? ', ' : ' ';
+				$sql = $sql.$sep.'deleted = :deleted';
+				$modifications++;
+			}
+
 			// then add the id
 			$params['id'] = $modifyResidence->getId();
 			$sql = $sql.' WHERE id = :id;';
@@ -115,6 +125,7 @@ class ResidenceManager
 			$status = $preparedSQL->execute($params);
 			return $status;
 		}
+
 
 	/**
 	 * Method used to mark a Residence as deleted in DB
@@ -133,6 +144,7 @@ class ResidenceManager
 			$status = $preparedSQL->execute($params);
 			return $status;
 		}
+
 
 	/**
 	 * Method used to get one Residence by its id, unless marked as deleted
@@ -158,6 +170,7 @@ class ResidenceManager
 
 			return $oneInObject ?? null;
 		}
+
 
 	/**
 	 * Method used to get all Residence by their userId, unless marked as deleted
@@ -186,6 +199,7 @@ class ResidenceManager
 			return $allInObject ?? [];
 		}
 
+
 	/**
 	 * User builder: transform an array in object
 	 */
@@ -199,7 +213,8 @@ class ResidenceManager
 			->setAddress($oneInArray['address'])
 			->setPostalCode($oneInArray['postal_code'])
 			->setCity($oneInArray['city'])
-			->setType($oneInArray['type']);
+			->setType($oneInArray['type'])
+			->setDeleted($oneInArray['deleted']);
 
 		return $oneInObject;
 	}
