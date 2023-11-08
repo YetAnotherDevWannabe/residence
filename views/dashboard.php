@@ -36,7 +36,7 @@
 		<div class="w-full rounded-lg md:w-1/2 lg:w-1/3">
 
 			<a href="<?= PUBLIC_PATH; ?>residence/">
-			<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-300 rounded-lg">
+			<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-300 rounded-lg border border-2 border-teal-600">
 				<div class="bbg-teal-900 h-28 rounded-xl col-1 p-4">
 					<svg width="80px" height="80px" viewBox="<?= ($residence->getType() == 'HOUSE') ? '425 0 1024 1024' : '-575 0 1024 1024'; ?>" class="icon mx-auto"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 191.648V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v351.648H64v640h864v-416l-416-416z" fill="#EAEAEA" /><path d="M512 1024V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v992h160z" fill="" /><path d="M608 768h224v256h-224z" fill="#434854" /><path d="M832 608l-224-224v256h224zM128 480h160v160H128z" fill="#469FCC" /><path d="M64 384h288v32H64zM928 672L512 256V192l416 416z" fill="" /><path d="M352 288H32a32 32 0 0 0-32 32v32a32 32 0 0 0 32 32h320V288zM1009.472 573.6L512 76.128v135.744l429.6 429.6a31.968 31.968 0 0 0 45.248 0l22.624-22.624a31.968 31.968 0 0 0 0-45.248z" fill="#EF4D4D" /><path d="M128 480h160v32H128zM608 416l224 224v-32l-224-224z" fill="" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
 				</div>
@@ -60,17 +60,17 @@
 <div class="w-full rounded-lg md:w-1/2 lg:w-1/3">
 
 	<a href="<?= PUBLIC_PATH; ?>residence/add/">
-	<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-300 rounded-lg">
-		<div class="bbg-teal-900 h-28 rounded-xl col-1 p-4">
+	<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-200 rounded-lg border border-2 border-teal-700">
+		<div class="bbg-teal-700 h-28 rounded-xl col-1 p-4">
 			<svg width="80px" height="80px" viewBox="0 0 1024 1024" class="icon mx-auto"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 191.648V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v351.648H64v640h864v-416l-416-416z" fill="#EAEAEA" /><path d="M512 1024V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v992h160z" fill="" /><path d="M608 768h224v256h-224z" fill="#434854" /><path d="M832 608l-224-224v256h224zM128 480h160v160H128z" fill="#469FCC" /><path d="M64 384h288v32H64zM928 672L512 256V192l416 416z" fill="" /><path d="M352 288H32a32 32 0 0 0-32 32v32a32 32 0 0 0 32 32h320V288zM1009.472 573.6L512 76.128v135.744l429.6 429.6a31.968 31.968 0 0 0 45.248 0l22.624-22.624a31.968 31.968 0 0 0 0-45.248z" fill="#EF4D4D" /><path d="M128 480h160v32H128zM608 416l224 224v-32l-224-224z" fill="" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
 		</div>
 
-		<div class="bbg-teal-900 h-28 rounded-xl p-3 col-span-2 grid items-end">
-			<h3 class="text-xl font-bold text-accent sm:text-2xl lg:text-xl xl:text-2xl">Add a Residence</h3>
+		<div class="bbg-teal-700 h-28 rounded-xl p-3 col-span-2 grid items-end">
+			<h3 class="text-xl font-bold text-teal-700 sm:text-2xl lg:text-xl xl:text-2xl">Add a Residence</h3>
 		</div>
 
-		<div class="bbg-teal-900 h-44 rounded-xl p-3 col-span-3 grid-rows-3">
-			<svg class="" viewBox="-50 -10 125 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM12 8.25C12.4142 8.25 12.75 8.58579 12.75 9V11.25H15C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H12.75L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V12.75H9C8.58579 12.75 8.25 12.4142 8.25 12C8.25 11.5858 8.58579 11.25 9 11.25H11.25L11.25 9C11.25 8.58579 11.5858 8.25 12 8.25Z" fill="#1FB2A6"></path></svg>
+		<div class="bbg-teal-700 h-44 rounded-xl p-3 col-span-3 grid-rows-3">
+			<svg class="" viewBox="-50 -10 125 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM12 8.25C12.4142 8.25 12.75 8.58579 12.75 9V11.25H15C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H12.75L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V12.75H9C8.58579 12.75 8.25 12.4142 8.25 12C8.25 11.5858 8.58579 11.25 9 11.25H11.25L11.25 9C11.25 8.58579 11.5858 8.25 12 8.25Z" fill="#134e4a"></path></svg>
 		</div>
 	</div>
 	</a>

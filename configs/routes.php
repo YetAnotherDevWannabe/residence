@@ -11,20 +11,29 @@ switch ( ROUTE ) {
 		$mainController->home();
 		break;
 
+
+	/**
+	 * Residence management
+	 */
 	// Dashboard
 	case '/dashboard/';
 		$mainController->dashboard();
 		break;
 
+	// Residence Add
+	case '/residence/add/';
+		$mainController->residenceAdd();
+		break;
 
 
-	/*
+
+	/**
 	 * Sessions pages
 	 */
 	// SignUp
 	case '/signup/';
-	$mainController->signUp();
-	break;
+		$mainController->signUp();
+		break;
 
 	// LogIn
 	case '/login/';
@@ -38,7 +47,7 @@ switch ( ROUTE ) {
 
 
 
-	/*
+	/**
 	 * Profil pages
 	 */
 	// Profil
@@ -52,7 +61,7 @@ switch ( ROUTE ) {
 		break;
 
 
-	/*
+	/**
 	 * Other pages
 	 */
 	// Page 404: if the path is not found, then 404 is loaded

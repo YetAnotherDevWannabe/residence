@@ -7,9 +7,11 @@ namespace App\Controllers;
 
 // Importing necessary classes
 
-use App\Models\Rememberme;
 use App\Models\Managers\RemembermeManager;
+use App\Models\Managers\ResidenceManager;
 use App\Models\Managers\UserManager;
+use App\Models\Rememberme;
+use App\Models\Residence;
 use App\Models\User;
 use \DateTime;
 
@@ -70,12 +72,105 @@ class MainController
 		require VIEWS_DIR.'dashboard.php';
 	}
 
+	/**
+	 * Controller for home page
+	 */
+	public function residenceAdd() {
+		// Redirect if not connected
+		if ( !isConnected() ) {
+			header('location: '.PUBLIC_PATH);
+			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
+		}
+
+		////----- 1. Check if form vars exists -----////
+		if ( isset($_POST['type']) &&
+			isset($_POST['name']) &&
+			isset($_POST['address']) &&
+			isset($_POST['postal-code']) &&
+			isset($_POST['city']) ) {
+
+			////----- 2. Check if there are errors -----////
+			// type
+			if ( $_POST['type'] != 'house' && $_POST['type'] != 'apartment' ) {
+				$errors['type'] = 'Residence type error';
+				updateLog(ERROR_LOG, $errors['type']);
+			}
+
+			// name
+			if ( mb_strlen($_POST['name']) < 3 || mb_strlen($_POST['name']) > 255 ) {
+				$errors['name'] = 'Your residence name must be between 3 and 255 characters';
+				updateLog(ERROR_LOG, $errors['name']);
+			}
+
+			// address
+			if ( mb_strlen($_POST['address']) < 3 || mb_strlen($_POST['address']) > 999 ) {
+				$errors['address'] = 'Your residence address must be between 3 and 999 characters';
+				updateLog(ERROR_LOG, $errors['address']);
+			}
+
+			// postal-code
+			$regex = '/^[0-9]{5,6}$/';
+			if ( !preg_match($regex, $_POST['postal-code']) ) {
+				$errors['postal-code'] = 'Postal is incorrect (must 5 or 6 numbers long)';
+				updateLog(ERROR_LOG, $errors['postal-code']);
+			}
+
+			// city
+			if ( mb_strlen($_POST['city']) < 3 || mb_strlen($_POST['city']) > 100 ) {
+				$errors['city'] = 'Your residence city must be between 3 and 100 characters';
+				updateLog(ERROR_LOG, $errors['city']);
+			}
+
+			////----- 3. If no error then continue -----////
+			if ( !isset($errors) ) {
+
+				// Create a new Residence and start hydrating it
+				$residence = new Residence();
+				$residence
+					->setUserId($_SESSION['user']->getId())
+					->setName($_POST['name'])
+					->setAddress($_POST['address'])
+					->setPostalCode($_POST['postal-code'])
+					->setCity($_POST['city'])
+					->setType(mb_strtoupper($_POST['type']))
+					->setDeleted(false);
+
+				// We save the new user in DB
+				$residenceManager = new ResidenceManager();
+				$status = $residenceManager->save($residence);
+
+				if ( $status ) {
+					$success = 'Your residence was added successfully';
+					updateLog(INFO_LOG, 'Residence added successfully by '.$_SESSION['user']->getEmail());
+				} else {
+					$errors['server'] = 'Problem with the Database, please try again later';
+					updateLog(ERROR_LOG, $errors['server']);
+				}
+
+			}
+		}
+
+		// Load home view
+		require VIEWS_DIR.'residence-add.php';
+	}
+
 
 	/**
 	 * Controller for Sign-up
 	 */
 	public function signUp() {
-
 		// Redirect if already connected
 		if ( isConnected() ) {
 			header('location: '.PUBLIC_PATH);
