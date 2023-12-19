@@ -1,17 +1,12 @@
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
-	<title>Signup page</title>
+	<title>Residence add</title>
 	<?php include VIEWS_DIR.'partials/header.php'; ?>
-	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>/css/signup.css"> --><!-- CSS for this page would go here -->
 </head>
 
 <body>
 	<?php
-	$residence = new stdClass();
-	$residence->type = 'House';
-	$residence->name = 'House Paris';
-
 	if (!isConnected()) {
 		header('location: ' . PUBLIC_PATH);
 	} else {
@@ -62,7 +57,7 @@
 
 					<h2 class="text-accent-content text-2xl">Add a Residence</h2>
 
-					<p class="my-6 text-xs">Fill in your details to create an account</p>
+					<p class="my-6 text-xs">Fill in your residence details</p>
 
 					<!-- Sign-Up Form -->
 					<!------------------>

@@ -3,18 +3,17 @@
 <head>
 	<title>Login page</title>
 	<?php include VIEWS_DIR . 'partials/header.php'; ?>
-	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>/css/login.css"> --><!-- CSS for this page would go here -->
 </head>
 
 <body>
 	<?php
-	$residence = new stdClass();
-	$residence->type = 'Apartment';
-	$residence->name = 'Apart Lyon';
-
 	if (isConnected()) {
 		header('location: ' . PUBLIC_PATH);
 		$topNavEnd = '';
+
+		// Load the $_SESSION user from DB
+		$userManager = new App\Models\Managers\UserManager();
+		$dbUser = $userManager->getOneById($_SESSION['user']->getId());
 	} else {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';

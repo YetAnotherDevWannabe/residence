@@ -8,10 +8,6 @@
 
 <body>
 	<?php
-	$residence = new stdClass();
-	$residence->type = 'Apartment';
-	$residence->name = 'Apart Lyon';
-
 	if (isConnected()) {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';

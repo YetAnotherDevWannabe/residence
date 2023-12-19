@@ -3,15 +3,10 @@
 <head>
 	<title>Profil page</title>
 	<?php include VIEWS_DIR.'partials/header.php'; ?>
-	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>/css/signup.css"> --><!-- CSS for this page would go here -->
 </head>
 
 <body>
 	<?php
-	$residence = new stdClass();
-	$residence->type = 'House';
-	$residence->name = 'House Paris';
-
 	if (isConnected()) {
 		$topNavStart = VIEWS_DIR.'partials/navbar/logo.php';
 		$topNavCenter = VIEWS_DIR.'partials/top-navbar.php';
