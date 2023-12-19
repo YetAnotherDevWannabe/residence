@@ -121,6 +121,9 @@ function logUserOut($user, bool $userIdOnly = false) {
 	// Remove user from SESSION
 	unset($_SESSION['user']);
 
+	// Remove token CRSF from SESSION
+	unset($_SESSION['tokenCSRF']);
+
 	// Remove user from COOKIE
 	unset($_COOKIE['rememberme']);
 
@@ -237,5 +240,27 @@ function sizeConverter($sizeInBytes) {
 		default:
 			return $sizeInBytes;
 			break;
+	}
+}
+
+/**
+ * Returns a random CRSF token
+ * 
+ * @return string
+ */
+function createToken() {
+	return md5(uniqid(mt_rand(), true));
+}
+
+/**
+ * Clears the unused CSRF tokens from $_SESSION
+ * 
+ * @return string
+ */
+function clearTokenFromSession() {
+	foreach ($_SESSION as $key => $item) {
+		if( mb_substr($item, 0, 10) == 'tokenEdit_' || mb_substr($item, 0, 12) == 'tokenDelete_' ) {
+			unset($_SESION[$key]);
+		}
 	}
 }

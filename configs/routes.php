@@ -25,6 +25,21 @@ switch ( ROUTE ) {
 		$mainController->residenceAdd();
 		break;
 
+	// Residence View
+	case '/residence/';
+		// $mainController->residenceView();
+		break;
+
+	// Residence Delete
+	case '/residence/delete/';
+		$mainController->residenceDelete();
+		break;
+
+	// Residence Edit
+	case '/residence/edit/';
+		$mainController->residenceEdit();
+		break;
+
 
 
 	/**

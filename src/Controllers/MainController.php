@@ -47,7 +47,7 @@ class MainController
 	}
 
 	/**
-	 * Controller for home page
+	 * Controller for dashboard page
 	 */
 	public function dashboard() {
 		// Redirect if not connected
@@ -73,7 +73,7 @@ class MainController
 	}
 
 	/**
-	 * Controller for home page
+	 * Controller for residence add
 	 */
 	public function residenceAdd() {
 		// Redirect if not connected
@@ -144,7 +144,7 @@ class MainController
 					->setAddress($_POST['address'])
 					->setPostalCode($_POST['postal-code'])
 					->setCity($_POST['city'])
-					->setType(mb_strtoupper($_POST['type']))
+					->setType(mb_strtolower($_POST['type']))
 					->setDeleted(false);
 
 				// We save the new user in DB
@@ -152,8 +152,8 @@ class MainController
 				$status = $residenceManager->save($residence);
 
 				if ( $status ) {
-					$success = 'Your residence was added successfully';
-					updateLog(INFO_LOG, 'Residence added successfully by '.$_SESSION['user']->getEmail());
+					$success = 'Your residence was edited successfully';
+					updateLog(INFO_LOG, 'Residence edited successfully by '.$_SESSION['user']->getEmail());
 				} else {
 					$errors['server'] = 'Problem with the Database, please try again later';
 					updateLog(ERROR_LOG, $errors['server']);
@@ -166,6 +166,119 @@ class MainController
 		require VIEWS_DIR.'residence-add.php';
 	}
 
+	/**
+	 * Controller for residence delete
+	 */
+	public function residenceDelete() {
+		
+
+		//https://www.phptutorial.net/php-tutorial/php-csrf/
+		
+		// $_SESSION['tokenDelete_'.$id] = password_verify($_SESSION['user']->getId().$id.$name.$postal_code, $tokenDelete)
+	}
+
+	/**
+	 * Controller for residence edit
+	 */
+	public function residenceEdit() {
+		// Redirect if not connected
+		if ( !isConnected() ) {
+			header('location: '.PUBLIC_PATH);
+			die();
+		} else if( isRemembered() ) {
+
+			// Load User from COOKIE
+			$userManager = new UserManager();
+			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
+			$userRemembered = $userManager->getOneById($userId);
+
+			// Connect user \\
+			//--------------\\
+			$_SESSION['user'] = $userRemembered;
+			$success = 'Your are now logged-in';
+			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
+		}
+
+		////----- 1. Check if form vars exists -----////
+		if ( isset($_POST['id']) &&
+			isset($_POST['token']) &&
+			isset($_POST['type']) &&
+			isset($_POST['name']) &&
+			isset($_POST['address']) &&
+			isset($_POST['postalCode']) &&
+			isset($_POST['city']) ) {
+
+			////----- 2. Check if there are errors -----////
+			// id & token
+			$residenceManager = new ResidenceManager();
+			$residenceOldName = $residenceManager->getOneById($_POST['id'])->getName();
+			if( !password_verify($_SESSION['user']->getId().$_POST['id'].$residenceOldName, $_POST['token']) ) {
+				$errors['token'] = 'Token is being tempered with';
+				updateLog(ERROR_LOG, $errors['token']);
+			}
+
+			// type
+			if ( $_POST['type'] != 'house' && $_POST['type'] != 'apartment' ) {
+				$errors['type'] = 'Residence type error';
+				updateLog(ERROR_LOG, $errors['type']);
+			}
+
+			// name
+			if ( mb_strlen($_POST['name']) < 3 || mb_strlen($_POST['name']) > 255 ) {
+				$errors['name'] = 'Your residence name must be between 3 and 255 characters';
+				updateLog(ERROR_LOG, $errors['name']);
+			}
+
+			// address
+			if ( mb_strlen($_POST['address']) < 3 || mb_strlen($_POST['address']) > 999 ) {
+				$errors['address'] = 'Your residence address must be between 3 and 999 characters';
+				updateLog(ERROR_LOG, $errors['address']);
+			}
+
+			// postalCode
+			$regex = '/^[0-9]{5,6}$/';
+			if ( !preg_match($regex, $_POST['postalCode']) ) {
+				$errors['postalCode'] = 'Postal is incorrect (must 5 or 6 numbers long)';
+				updateLog(ERROR_LOG, $errors['postalCode']);
+			}
+
+			// city
+			if ( mb_strlen($_POST['city']) < 3 || mb_strlen($_POST['city']) > 100 ) {
+				$errors['city'] = 'Your residence city must be between 3 and 100 characters';
+				updateLog(ERROR_LOG, $errors['city']);
+			}
+
+			////----- 3. If no error then continue -----////
+			if ( !isset($errors) ) {				
+				// Create a new Residence and start hydrating it
+				$residenceUpdate = new Residence();
+				$residenceUpdate
+					->setId($_POST['id'])
+					->setUserId($_SESSION['user']->getId())
+					->setName($_POST['name'])
+					->setAddress($_POST['address'])
+					->setPostalCode($_POST['postalCode'])
+					->setCity($_POST['city'])
+					->setType(mb_strtolower($_POST['type']));
+
+				// We save the new user in DB
+				$status = $residenceManager->update($residenceUpdate);
+
+				if ( $status ) {
+					$success = 'Your residence was added successfully';
+					updateLog(INFO_LOG, 'Residence added successfully by '.$_SESSION['user']->getEmail());
+				} else {
+					$errors['server'] = 'Problem with the Database, please try again later';
+					updateLog(ERROR_LOG, $errors['server']);
+				}
+				clearTokenFromSession();
+
+			}
+		}
+
+		// Load home view
+		require VIEWS_DIR.'residence-edit.php';
+	}
 
 	/**
 	 * Controller for Sign-up
@@ -474,7 +587,7 @@ class MainController
 	}
 
 	/**
-	 * Controller for profil
+	 * Controller for profil edit
 	 */
 	public function profilEdit() {
 		// Redirect if not connected

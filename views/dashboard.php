@@ -3,7 +3,6 @@
 <head>
 	<title>Home page</title>
 	<?php include VIEWS_DIR.'partials/header.php'; ?>
-	<!-- <link rel="stylesheet" href="<?= PUBLIC_PATH; ?>css/home.css"> -->
 </head>
 
 <body>
@@ -31,54 +30,111 @@
 
 	<div class="m-4 flex flex-wrap">
 		
-	<?php foreach ($residences as $residence) { ?>
+		<?php foreach ($residences as $k => $residence) { ?>
+
+			<div id="residence_<?= $k; ?>" class="w-full rounded-lg md:w-1/2 lg:w-1/3 cursor-pointer group" onclick="intercept(event);">
+
+				<!-- <a href="<?= PUBLIC_PATH; ?>residence/"> -->
+				<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-300 rounded-lg border border-2 border-base-300 hover:border-teal-600">
+					<div class="h-28 rounded-xl col-1 p-4">
+						<svg width="80px" height="80px" viewBox="<?= ($residence->getType() == 'house') ? '425 0 1024 1024' : '-575 0 1024 1024'; ?>" class="icon mx-auto"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 191.648V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v351.648H64v640h864v-416l-416-416z" fill="#EAEAEA" /><path d="M512 1024V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v992h160z" fill="" /><path d="M608 768h224v256h-224z" fill="#434854" /><path d="M832 608l-224-224v256h224zM128 480h160v160H128z" fill="#469FCC" /><path d="M64 384h288v32H64zM928 672L512 256V192l416 416z" fill="" /><path d="M352 288H32a32 32 0 0 0-32 32v32a32 32 0 0 0 32 32h320V288zM1009.472 573.6L512 76.128v135.744l429.6 429.6a31.968 31.968 0 0 0 45.248 0l22.624-22.624a31.968 31.968 0 0 0 0-45.248z" fill="#EF4D4D" /><path d="M128 480h160v32H128zM608 416l224 224v-32l-224-224z" fill="" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
+					</div>
+
+					<div class="h-28 rounded-xl p-3 col-span-2 grid items-end">
+						<h3 class="text-xl font-bold text-accent sm:text-2xl lg:text-xl xl:text-2xl"><?= $residence->getName(); ?></h3>
+					</div>
+
+					<div class="h-44 rounded-xl p-3 col-span-3 grid-rows-3">
+						<p class="text-base font-medium px-2 mt-2"><?= $residence->getAddress(); ?></p>
+						<p class="text-base font-medium px-2 mt-2"><?= $residence->getPostalCode(); ?></p>
+						<p class="text-base font-medium px-2 mt-2"><?= $residence->getCity(); ?></p>
+					</div>
+
+					<div id="menu_icon_<?= $k; ?>" class="absolute group-hover:opacity-100 opacity-0 h-10 w-10 transition duration-500">
+						<svg viewBox="0 0 24 24" class="" xmlns="http://www.w3.org/2000/svg" stroke="" stroke-width="0.00024"><g stroke-linecap="round" stroke-linejoin="round" stroke="#15191E" stroke-width="2.4"> <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM17 17.25H7C6.59 17.25 6.25 16.91 6.25 16.5C6.25 16.09 6.59 15.75 7 15.75H17C17.41 15.75 17.75 16.09 17.75 16.5C17.75 16.91 17.41 17.25 17 17.25ZM17 12.75H7C6.59 12.75 6.25 12.41 6.25 12C6.25 11.59 6.59 11.25 7 11.25H17C17.41 11.25 17.75 11.59 17.75 12C17.75 12.41 17.41 12.75 17 12.75ZM17 8.25H7C6.59 8.25 6.25 7.91 6.25 7.5C6.25 7.09 6.59 6.75 7 6.75H17C17.41 6.75 17.75 7.09 17.75 7.5C17.75 7.91 17.41 8.25 17 8.25Z" fill="#292D32"></path> </g> <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM17 17.25H7C6.59 17.25 6.25 16.91 6.25 16.5C6.25 16.09 6.59 15.75 7 15.75H17C17.41 15.75 17.75 16.09 17.75 16.5C17.75 16.91 17.41 17.25 17 17.25ZM17 12.75H7C6.59 12.75 6.25 12.41 6.25 12C6.25 11.59 6.59 11.25 7 11.25H17C17.41 11.25 17.75 11.59 17.75 12C17.75 12.41 17.41 12.75 17 12.75ZM17 8.25H7C6.59 8.25 6.25 7.91 6.25 7.5C6.25 7.09 6.59 6.75 7 6.75H17C17.41 6.75 17.75 7.09 17.75 7.5C17.75 7.91 17.41 8.25 17 8.25Z" fill="var(--primaryColor)"></path></svg>
+
+						<div id="menu_list_<?= $k; ?>" class="absolute opacity-0 left-[-9999px] transition duration-500">
+						<?php
+						// Create a token for the edit/view link and store it in _SESSION
+						$tokenEdit = password_hash($_SESSION['user']->getId().$residence->getId().$residence->getName(), PASSWORD_BCRYPT);
+						$_SESSION['tokenEdit_'.$residence->getId()] = $tokenEdit;
+
+						// Create a token for the delete link and store it in _SESSION
+						$tokenDelete = password_hash($_SESSION['user']->getId().$residence->getId().$residence->getName().$residence->getPostalCode(), PASSWORD_BCRYPT);
+						$_SESSION['tokenDelete_'.$residence->getId()] = $tokenDelete;
+						?>
+
+							<div class="flex-row items-center rounded-md ">
+								<!-- View -->
+								<a href="<?= PUBLIC_PATH.'residence/?id='.$residence->getId().'&token='.$tokenEdit; ?>"
+									class="text-content hover:text-teal-600 text-sm font-medium bg-base-100 hover:bg-base-200 border border-slate-200 rounded-t-lg p-2 inline-flex space-x-1 items-center">
+									<span>
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /> <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> </svg>
+									</span>
+									<span class="hidden md:inline-block md:w-10">View</span>
+								</a>
+
+								<!-- Edit -->
+								<a href="<?= PUBLIC_PATH.'residence/edit/?id='.$residence->getId().'&token='.$tokenEdit; ?>"
+									class="text-content hover:text-teal-600 text-sm font-medium bg-base-100 hover:bg-base-200 border-x border-slate-200 p-2 inline-flex space-x-1 items-center">
+									<span>
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+												stroke="currentColor" class="w-6 h-6">
+												<path stroke-linecap="round" stroke-linejoin="round"
+													d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+										</svg>
+									</span>
+									<span class="hidden md:inline-block md:w-10">Edit</span>
+								</a>
+
+								<!-- Delete -->
+								<a href="<?= PUBLIC_PATH.'residence/delete/?id='.$residence->getId().'&token='.$tokenDelete; ?>"
+									class="text-content hover:text-teal-600 text-sm font-medium bg-base-100 hover:bg-base-200 border border-slate-200 rounded-b-lg p-2 inline-flex space-x-1 items-center">
+									<span>
+											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+												stroke="currentColor" class="w-6 h-6">
+												<path stroke-linecap="round" stroke-linejoin="round"
+													d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+											</svg>
+									</span>
+									<span class="hidden md:inline-block md:w-10">Delete</span>
+								</a>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<!-- </a> -->
+
+			</div>
+
+		<?php } ?>
 
 		<div class="w-full rounded-lg md:w-1/2 lg:w-1/3">
 
-			<a href="<?= PUBLIC_PATH; ?>residence/">
-			<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-300 rounded-lg border border-2 border-teal-600">
-				<div class="bbg-teal-900 h-28 rounded-xl col-1 p-4">
-					<svg width="80px" height="80px" viewBox="<?= ($residence->getType() == 'HOUSE') ? '425 0 1024 1024' : '-575 0 1024 1024'; ?>" class="icon mx-auto"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 191.648V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v351.648H64v640h864v-416l-416-416z" fill="#EAEAEA" /><path d="M512 1024V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v992h160z" fill="" /><path d="M608 768h224v256h-224z" fill="#434854" /><path d="M832 608l-224-224v256h224zM128 480h160v160H128z" fill="#469FCC" /><path d="M64 384h288v32H64zM928 672L512 256V192l416 416z" fill="" /><path d="M352 288H32a32 32 0 0 0-32 32v32a32 32 0 0 0 32 32h320V288zM1009.472 573.6L512 76.128v135.744l429.6 429.6a31.968 31.968 0 0 0 45.248 0l22.624-22.624a31.968 31.968 0 0 0 0-45.248z" fill="#EF4D4D" /><path d="M128 480h160v32H128zM608 416l224 224v-32l-224-224z" fill="" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
+			<a href="<?= PUBLIC_PATH; ?>residence/add/">
+			<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-200 hover:bg-base-200 rounded-lg border border-2 border-base-200 hover:border-teal-700">
+				<div class="h-28 rounded-xl col-1 p-4">
+					<svg width="80px" height="80px" viewBox="0 0 1024 1024" class="icon mx-auto"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 191.648V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v351.648H64v640h864v-416l-416-416z" fill="#EAEAEABB" /><path d="M512 1024V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v992h160z" fill="" /><path d="M608 768h224v256h-224z" fill="#434854BB" /><path d="M832 608l-224-224v256h224zM128 480h160v160H128z" fill="#469FCCBB" /><path d="M64 384h288v32H64zM928 672L512 256V192l416 416z" fill="" /><path d="M352 288H32a32 32 0 0 0-32 32v32a32 32 0 0 0 32 32h320V288zM1009.472 573.6L512 76.128v135.744l429.6 429.6a31.968 31.968 0 0 0 45.248 0l22.624-22.624a31.968 31.968 0 0 0 0-45.248z" fill="#EF4D4DBB" /><path d="M128 480h160v32H128zM608 416l224 224v-32l-224-224z" fill="" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73BB" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
 				</div>
 
-				<div class="bbg-teal-900 h-28 rounded-xl p-3 col-span-2 grid items-end">
-					<h3 class="text-xl font-bold text-accent sm:text-2xl lg:text-xl xl:text-2xl"><?= $residence->getName(); ?></h3>
+				<div class="h-28 rounded-xl p-3 col-span-2 grid items-end">
+					<h3 class="text-xl font-bold text-teal-700 sm:text-2xl lg:text-xl xl:text-2xl">Add a Residence</h3>
 				</div>
 
-				<div class="bbg-teal-900 h-44 rounded-xl p-3 col-span-3 grid-rows-3">
-					<p class="text-base font-medium text-body-color px-2 mt-2"><?= $residence->getAddress(); ?></p>
-					<p class="text-base font-medium text-body-color px-2 mt-2"><?= $residence->getPostalCode(); ?></p>
-					<p class="text-base font-medium text-body-color px-2 mt-2"><?= $residence->getCity(); ?></p>
+				<div class="h-44 rounded-xl p-3 col-span-3 grid-rows-3">
+					<svg class="" viewBox="-50 -10 125 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM12 8.25C12.4142 8.25 12.75 8.58579 12.75 9V11.25H15C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H12.75L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V12.75H9C8.58579 12.75 8.25 12.4142 8.25 12C8.25 11.5858 8.58579 11.25 9 11.25H11.25L11.25 9C11.25 8.58579 11.5858 8.25 12 8.25Z" fill="#134e4a"></path></svg>
 				</div>
 			</div>
 			</a>
 
 		</div>
 
-	<?php } ?>
-
-<div class="w-full rounded-lg md:w-1/2 lg:w-1/3">
-
-	<a href="<?= PUBLIC_PATH; ?>residence/add/">
-	<div class="grid grid-cols-3 gap-2 p-3 m-2 bg-base-200 rounded-lg border border-2 border-teal-700">
-		<div class="bbg-teal-700 h-28 rounded-xl col-1 p-4">
-			<svg width="80px" height="80px" viewBox="0 0 1024 1024" class="icon mx-auto"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 191.648V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v351.648H64v640h864v-416l-416-416z" fill="#EAEAEA" /><path d="M512 1024V32a32 32 0 0 0-32-32h-96a32 32 0 0 0-32 32v992h160z" fill="" /><path d="M608 768h224v256h-224z" fill="#434854" /><path d="M832 608l-224-224v256h224zM128 480h160v160H128z" fill="#469FCC" /><path d="M64 384h288v32H64zM928 672L512 256V192l416 416z" fill="" /><path d="M352 288H32a32 32 0 0 0-32 32v32a32 32 0 0 0 32 32h320V288zM1009.472 573.6L512 76.128v135.744l429.6 429.6a31.968 31.968 0 0 0 45.248 0l22.624-22.624a31.968 31.968 0 0 0 0-45.248z" fill="#EF4D4D" /><path d="M128 480h160v32H128zM608 416l224 224v-32l-224-224z" fill="" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
-		</div>
-
-		<div class="bbg-teal-700 h-28 rounded-xl p-3 col-span-2 grid items-end">
-			<h3 class="text-xl font-bold text-teal-700 sm:text-2xl lg:text-xl xl:text-2xl">Add a Residence</h3>
-		</div>
-
-		<div class="bbg-teal-700 h-44 rounded-xl p-3 col-span-3 grid-rows-3">
-			<svg class="" viewBox="-50 -10 125 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM12 8.25C12.4142 8.25 12.75 8.58579 12.75 9V11.25H15C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H12.75L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V12.75H9C8.58579 12.75 8.25 12.4142 8.25 12C8.25 11.5858 8.58579 11.25 9 11.25H11.25L11.25 9C11.25 8.58579 11.5858 8.25 12 8.25Z" fill="#134e4a"></path></svg>
-		</div>
-	</div>
-	</a>
-
-</div>
-
 	</div>
 
+	<script>let residences = <?= json_encode($residences, JSON_HEX_TAG); ?>;</script>
 	<?php include VIEWS_DIR .'/partials/footer.php'; ?>
+	<script src="<?= PUBLIC_PATH ?>js/dashboard.js"></script>
 </body>
 </html>
