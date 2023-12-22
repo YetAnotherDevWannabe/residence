@@ -244,12 +244,14 @@ function sizeConverter($sizeInBytes) {
 }
 
 /**
- * Returns a random CRSF token
+ * Returns a random cryptographically secure string
  * 
  * @return string
  */
-function createToken() {
-	return md5(uniqid(mt_rand(), true));
+function generateRandomString($size) {
+   $bytes = random_bytes($size);
+   $randomString = bin2hex($bytes);
+   return substr($randomString, 0, $size);
 }
 
 /**

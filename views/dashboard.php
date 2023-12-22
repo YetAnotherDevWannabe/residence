@@ -56,12 +56,12 @@
 						<div id="menu_list_<?= $k; ?>" class="absolute opacity-0 left-[-9999px] transition duration-500">
 						<?php
 						// Create a token for the edit/view link and store it in _SESSION
-						$tokenEdit = password_hash($_SESSION['user']->getId().$residence->getId().$residence->getName(), PASSWORD_BCRYPT);
-						$_SESSION['tokenEdit_'.$residence->getId()] = $tokenEdit;
+						$tokenEdit = mb_substr(password_hash(EDIT_TOKEN.$residence->getUserId().$residence->getId().$residence->getName(), PASSWORD_BCRYPT), 7);
+						$_SESSION['tokenEdit_'.$residence->getId()] = '$2y$10$'.$tokenEdit;
 
 						// Create a token for the delete link and store it in _SESSION
-						$tokenDelete = password_hash($_SESSION['user']->getId().$residence->getId().$residence->getName().$residence->getPostalCode(), PASSWORD_BCRYPT);
-						$_SESSION['tokenDelete_'.$residence->getId()] = $tokenDelete;
+						$tokenDelete = mb_substr(password_hash(DELETE_TOKEN.$residence->getUserId().$residence->getId().$residence->getName().$residence->getPostalCode(), PASSWORD_BCRYPT), 7);
+						$_SESSION['tokenDelete_'.$residence->getId()] = '$2y$10$'.$tokenDelete;
 						?>
 
 							<div class="flex-row items-center rounded-md ">

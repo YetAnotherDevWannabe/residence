@@ -15,4 +15,8 @@ define('DB_PASSWORD',	'password');
 // define('MAIL_FROM',		'from@email.com');
 // define('MAIL_REPLY',		'reply@email.com');
 
+// Secret key used for edit/delete token in SESSION
+define('EDIT_TOKEN', '0123456789abcdefghijklmnopqrstuvwxyz');
+define('DELETE_TOKEN', '0123456789abcdefghijklmnopqrstuvwxyz');
+
 //   /!\ NEVER PUBLISH THIS FILE ON GITHUB /!\   \\

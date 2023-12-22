@@ -38,7 +38,7 @@
 					$errors['server'] = 'Wrong residence ID';
 				}
 			}
-		} ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		}
 	}
 
 	include VIEWS_DIR.'partials/navbar/_top-navbar.php';
@@ -54,12 +54,12 @@
 			</div>
 		</div>
 		<?php
-	} else if ( isset($errors['server']) ) {
+	} else if ( isset($errors['server']) || isset($errors['token']) ) {
 		?>
 		<div class="card w-1/2 bg-base-200 shadow-xl mt-20 mx-auto">
 			<div class="card-body items-center text-center p-4">
 				<h2 class="card-title text-error">Error!</h2>
-				<p class="my-4"><?= $errors['server'] ?></p>
+				<p class="my-4"><?= isset($errors['server']) ? $errors['server'] : (isset($errors['token']) ? $errors['token'] : 'What happened ?'); ?></p>
 				<div class="card-actions justify-end">
 					<a href="<?= PUBLIC_PATH ?>dashboard/" class="btn btn-error">Back</a>
 				</div>

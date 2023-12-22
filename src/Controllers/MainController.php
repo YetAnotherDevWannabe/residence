@@ -170,33 +170,59 @@ class MainController
 	 * Controller for residence delete
 	 */
 	public function residenceDelete() {
-		
+		// Redirect if not connected but not using RemeberMe cookie
+		if ( !isConnected() ) {
+			header('location: '.PUBLIC_PATH);
+			die();
+		}
 
-		//https://www.phptutorial.net/php-tutorial/php-csrf/
-		
-		// $_SESSION['tokenDelete_'.$id] = password_verify($_SESSION['user']->getId().$id.$name.$postal_code, $tokenDelete)
+		////----- 1. Check if form vars exists -----////
+		if ( isset($_GET['id']) &&
+			isset($_GET['token']) && 
+			isset($_GET['name'])) {
+
+			////----- 2. Check if there are errors -----////
+			// id & token / Also checks if $_SESSION['user'] is the residence owner ($residence->getUserId())
+			$residenceManager = new ResidenceManager();
+			$residenceOldName = $residenceManager->getOneById($_GET['id'])->getName();
+			$residenceOldPostal = $residenceManager->getOneById($_GET['id'])->getPostalCode();
+			if( !password_verify(DELETE_TOKEN.$_SESSION['user']->getId().$_GET['id'].$residenceOldName.$residenceOldPostal, 'e$2y$10$'.$_GET['token']) ) {
+				$errors['token'] = 'Token is being tempered with';
+				updateLog(ERROR_LOG, $errors['token']);
+			}
+
+			////----- 3. If no error then continue -----////
+			if ( !isset($errors) ) {
+				// Load the residence for deletion
+				$residenceToDelete = $residenceManager->getOneById($_GET['id']);
+
+				// We save the new user in DB
+				$status = $residenceManager->delete($residenceToDelete);
+
+				if ( $status ) {
+					$success = 'Residence \''.$residenceToDelete->getName().'\' was delete successfully';
+					updateLog(INFO_LOG, 'Residence with id \''.$residenceToDelete->getId().'\' was delete by '.$_SESSION['user']->getEmail());
+				} else {
+					$errors['server'] = 'Problem with the Database, please try again later';
+					updateLog(ERROR_LOG, $errors['server']);
+				}
+				clearTokenFromSession();
+
+			}
+		}
+
+	// Load home view
+	require VIEWS_DIR.'residence-delete.php';
 	}
 
 	/**
 	 * Controller for residence edit
 	 */
 	public function residenceEdit() {
-		// Redirect if not connected
+		// Redirect if not connected but not using RemeberMe cookie
 		if ( !isConnected() ) {
 			header('location: '.PUBLIC_PATH);
 			die();
-		} else if( isRemembered() ) {
-
-			// Load User from COOKIE
-			$userManager = new UserManager();
-			$userId = mb_substr($_COOKIE['rememberme'], 0, mb_strpos($_COOKIE['rememberme'], ':'));
-			$userRemembered = $userManager->getOneById($userId);
-
-			// Connect user \\
-			//--------------\\
-			$_SESSION['user'] = $userRemembered;
-			$success = 'Your are now logged-in';
-			updateLog(INFO_LOG, 'user '.$userRemembered->getEmail().' logged-in');
 		}
 
 		////----- 1. Check if form vars exists -----////
@@ -209,10 +235,10 @@ class MainController
 			isset($_POST['city']) ) {
 
 			////----- 2. Check if there are errors -----////
-			// id & token
+			// id & token / Also checks if $_SESSION['user'] is the residence owner ($residence->getUserId())
 			$residenceManager = new ResidenceManager();
 			$residenceOldName = $residenceManager->getOneById($_POST['id'])->getName();
-			if( !password_verify($_SESSION['user']->getId().$_POST['id'].$residenceOldName, $_POST['token']) ) {
+			if( !password_verify(EDIT_TOKEN.$_SESSION['user']->getId().$_POST['id'].$residenceOldName, '$2y$10$'.$_POST['token']) ) {
 				$errors['token'] = 'Token is being tempered with';
 				updateLog(ERROR_LOG, $errors['token']);
 			}
